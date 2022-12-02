@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        body {
+  background-color: #ddd;
+  font-family: Tahoma;
+  vertical-align: middle;
+}
+
+.container {
+  margin: auto;
+  margin-top: 16px;
+  box-sizing: border-box;
+  width: 248px;
+  height: 595px;
+}
+
+.second {
+  border-radius: 20px;
+  min-width: 13.5px;
+  min-height: 13.5px;
+  padding: 17px;
+  margin: 1px;
+  display: inline-block;
+  text-align: center;
+  color: white;
+  font-size: 0.75rem;
+}
+
+.row {
+  margin: 0 auto;
+}
+
+.min-counter-wrapper {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+
+    </div>
+    <div class="min-counter-wrapper">Minutes Passed : <span class="min-counter"></span></div>
+</body>
+<script>
+    const container = document.querySelector(".container");
+let secondsCount = 0;
+let colorsGradient = [];
+const colorsGradientNumber = 60;
+const minCounterEl = document.querySelector(".min-counter");
+let minCounter = 0;
+let dingSound = new Audio(
+  "https://thumbs.dreamstime.com/audiothumb_22779/227796222.mp3"
+);
+
+function createSecondElement(color) {
+  let secondElement = document.createElement("div");
+  secondElement.setAttribute("class", "second");
+  secondElement.textContent = secondsCount;
+  color = `rgb(${color[0]},${color[1]},${color[2]})`;
+  secondElement.style.backgroundColor = color;
+  return secondElement;
+}
+
+function calculateGradient(color1 = [255, 0, 0], color2 = [0, 0, 55]) {
+  for (i = 0; i < colorsGradientNumber; i++) {
+    let weight = i / colorsGradientNumber;
+    let w1 = weight;
+    let w2 = 1 - w1;
+    let rgb = [
+      Math.round(color1[0] * w1 + color2[0] * w2),
+      Math.round(color1[1] * w1 + color2[1] * w2),
+      Math.round(color1[2] * w1 + color2[2] * w2)
+    ];
+    colorsGradient.push(rgb);
+  }
+}
+
+calculateGradient();
+
+setInterval(() => {
+  minCounterEl.innerHTML = minCounter;
+  if (secondsCount == 60) {
+    secondsCount = 0;
+    minCounter++;
+    container.innerHTML = "";
+    if (minCounter % 20 == 0) {
+      dingSound.play();
+    }
+  }
+  if (secondsCount % 5 == 0) {
+    let rowEl = document.createElement("div");
+    rowEl.setAttribute("class", "row");
+    container.appendChild(rowEl);
+  }
+  // add to seconds
+  //
+  document
+    .querySelector(".row:last-of-type")
+    .appendChild(createSecondElement(colorsGradient[secondsCount]));
+
+  secondsCount++;
+}, 1000);
+
+</script>
+
+</html>
