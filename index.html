@@ -58,8 +58,9 @@ const colorsGradientNumber = 60;
 const minCounterEl = document.querySelector(".min-counter");
 let minCounter = 0;
 let dingSound = new Audio(
-  "https://thumbs.dreamstime.com/audiothumb_22779/227796222.mp3"
+  "./ding.mp3"
 );
+dingSound.play();
 
 function createSecondElement(color) {
   let secondElement = document.createElement("div");
