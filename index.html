@@ -11,25 +11,30 @@
   font-family: Tahoma;
   vertical-align: middle;
 }
+body::backdrop {
+  background-color: #ddd;
+}
 
 .container {
   margin: auto;
   margin-top: 16px;
   box-sizing: border-box;
-  width: 248px;
-  height: 595px;
+  width: 288px;
+  height: 700px;
 }
 
 .second {
-  border-radius: 20px;
+  border-radius: 7px;
   min-width: 13.5px;
   min-height: 13.5px;
-  padding: 17px;
-  margin: 1px;
+  padding: 20px 20px;
+  margin: 2px;
   display: inline-block;
   text-align: center;
   color: white;
   font-size: 0.75rem;
+  animation-name: showing-up;
+  animation-duration: 400ms;
 }
 
 .row {
@@ -42,13 +47,18 @@
   font-size: 18px;
   margin-bottom: 6px;
 }
+
+@keyframes showing-up {
+  from {opacity: 0;}
+  to {opacity: 100%;}
+}
     </style>
 </head>
 <body>
     <div class="container">
 
     </div>
-    <div class="min-counter-wrapper">Minutes Passed : <span class="min-counter"></span></div>
+    <div class="min-counter-wrapper">Minutes Passed : <span class="min-counter"></span> <button class="btn">go loco</button></div>
 </body>
 <script>
     const container = document.querySelector(".container");
@@ -66,8 +76,9 @@ function createSecondElement(color) {
   let secondElement = document.createElement("div");
   secondElement.setAttribute("class", "second");
   secondElement.textContent = secondsCount;
-  color = `rgb(${color[0]},${color[1]},${color[2]})`;
-  secondElement.style.backgroundColor = color;
+  // color = `rgb(${color[0]},${color[1]},${color[2]})`;
+  color = `linear-gradient(225deg, rgb(${color[0]},${color[1]},${color[2]},1) 0%, rgba(${color[0]},${color[1]},${color[2]},0.70) 100%)`;
+  secondElement.style.background = color;
   return secondElement;
 }
 
@@ -110,7 +121,19 @@ setInterval(() => {
 
   secondsCount++;
 }, 1000);
-
+function GoInFullscreen(element) {
+	if(element.requestFullscreen)
+		element.requestFullscreen();
+	else if(element.mozRequestFullScreen)
+		element.mozRequestFullScreen();
+	else if(element.webkitRequestFullscreen)
+		element.webkitRequestFullscreen();
+	else if(element.msRequestFullscreen)
+		element.msRequestFullscreen();
+}
+document.querySelector('.min-counter-wrapper').addEventListener('click',(e)=>{
+  GoInFullscreen(document.body)
+});
 </script>
 
 </html>
